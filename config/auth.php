@@ -14,8 +14,11 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        // 'guard' => env('AUTH_GUARD', 'web'),
+        // 'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+
+        'guard' => 'students',
+        'passwords' => 'students',
     ],
 
     /*
@@ -40,6 +43,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'admins' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+
+        'students' => [
+            'driver' => 'session',
+            'provider' => 'students',
+        ],
     ],
 
     /*
@@ -60,10 +73,27 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
-        ],
+        // 'users' => [
+        //     'driver' => 'eloquent',
+        //     'model' => env('AUTH_MODEL', App\Models\User::class),
+        // ],
+        // .env ファイルに AUTH_MODEL が設定されている場合、その値を使用。
+        // もし .env ファイルに AUTH_MODEL が存在しない場合は、App\Models\User::class がデフォルトで使用。
+
+            'users' => [
+                'driver' => 'eloquent',
+                'model' => App\Models\User::class,
+            ],
+
+            'admins' => [
+                'driver' => 'eloquent',
+                'model' => App\Models\Admin::class,
+            ],
+
+            'students' => [
+                'driver' => 'eloquent',
+                'model' => App\Models\Student::class,
+            ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -93,6 +123,20 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'admins' => [
+            'provider' => 'admins',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'students' => [
+            'provider' => 'students',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,

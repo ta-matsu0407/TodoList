@@ -18,8 +18,19 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    // public function boot(): void
+    // {
+    //     Vite::prefetch(concurrency: 3);
+    // }
+
+    public function boot()
     {
-        Vite::prefetch(concurrency: 3);
+        if (request()->is('student*')) {
+            config(['session.cookie' => config('session.cookie_student')]);
+        } elseif (request()->is('admin*')) {
+            config(['session.cookie' => config('session.cookie_admin')]);
+            } else {
+            config(['session.cookie' => config('session.cookie')]);
+        }
     }
 }
